@@ -45,8 +45,8 @@
                             <div class="col-md-6">
                                 <select name="role" class="form-select" aria-label="Default select example">
                                     <option selected>Select For a Role</option>
-                                    <option value="author">Author</option>
-                                    <option value="reader">Reader</option>
+                                    <option value="Author">Author</option>
+                                    <option value="Reader">Reader</option>
                                 </select>
 
                                 @error('role')

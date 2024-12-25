@@ -24,12 +24,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $userlist = User::all();
-        return view('home', compact('userlist'));
-    }
-
-    function delete($user_id){
-        User::find($user_id)->delete();
-        return back();
+        return view('home',);
     }
 }
