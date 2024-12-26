@@ -23,7 +23,9 @@ Route::get("user.delete.{user_id}", [UserController::class, 'delete']); // user 
 
 Route::get('/blogpost', [BlogController::class, 'index']); // Blog Post and Submission Form
 Route::post('/blogpost.insert', [BlogController::class, 'insert']); // Blog Posting
+Route::post('/blogpost.edit', [BlogController::class, 'update']); // Blog Posting
 Route::get('/blogpost.publish.{blog_id}', [BlogController::class, 'publish']); // Blog Publishing
 Route::get('/blogpost.draft.{blog_id}', [BlogController::class, 'draft']); // Blog Drafting
+Route::get('/blogpost.edit.{blog_id}', [BlogController::class, 'edit']); // Blog Edit
 Route::get('/blogpost.delete.{blog_id}', [BlogController::class, 'delete']); // Blog Deleting
 

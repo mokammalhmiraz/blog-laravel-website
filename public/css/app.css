@@ -20,8 +20,17 @@
 .blog-card-list p{
     font-size: 13px;
 }
-.blog-card-list .btns{
+.blog-card-list .btns .btns-grp{
     display: flex;
     flex-direction: row;
     justify-content: space-around;
+}
+.blog-card-list .btns{
+    display: flex;
+    flex-direction: column;
+}
+.blog-card-list .btns .btns-single{
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
 }

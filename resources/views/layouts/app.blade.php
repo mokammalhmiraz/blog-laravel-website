@@ -45,8 +45,13 @@
                                     <a class="nav-link" href="{{ url("requestlist")}}">Request List</a>
                                 </li>
                             @endif
+                            @if ( ((Auth::user()->role)=='Author') == true )
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ url("blogpost")}}">Blog Post</a>
+                            </li>
+                            @endif
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url("bloglist")}}">Blog List</a>
                             </li>
                         </ul>
                     @endauth

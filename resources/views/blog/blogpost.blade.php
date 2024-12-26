@@ -82,15 +82,17 @@
                                 </div>
                                 <div class="col-2">
                                     <div class='btns'>
-                                        @if ($blog->status == "draft")
-                                            <a href="{{ url('blogpost.publish') }}.{{ $blog->id }}" class="btn btn-success">Publish</a>
-                                        @else
-                                            <a href="{{ url('blogpost.draft') }}.{{ $blog->id }}" class="btn btn-warning">Draft</a>
-                                        @endif
-
-
-
-                                        <a href="{{ url('blogpost.delete') }}.{{ $blog->id }}" class="btn btn-danger">Delete</a>
+                                        <div class="btns-grp">
+                                            @if ($blog->status == "draft")
+                                                <a href="{{ url('blogpost.publish') }}.{{ $blog->id }}" class="btn btn-success">Publish</a>
+                                            @else
+                                                <a href="{{ url('blogpost.draft') }}.{{ $blog->id }}" class="btn btn-warning">Draft</a>
+                                            @endif
+                                            <a href="{{ url('blogpost.delete') }}.{{ $blog->id }}" class="btn btn-danger">Delete</a>
+                                        </div>
+                                        <div class="btns-single">
+                                            <a href="{{ url('blogpost.edit') }}.{{ $blog->id }}" class="btn btn-info">Edit</a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
