@@ -13,6 +13,8 @@
     <link rel="dns-prefetch" href="//fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
 
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
@@ -43,7 +45,9 @@
                                     <a class="nav-link" href="{{ url("requestlist")}}">Request List</a>
                                 </li>
                             @endif
-
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url("blogpost")}}">Blog Post</a>
+                            </li>
                         </ul>
                     @endauth
 
@@ -91,4 +95,6 @@
         </main>
     </div>
 </body>
+<script>
+</script>
 </html>

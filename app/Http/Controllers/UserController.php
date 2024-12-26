@@ -23,9 +23,9 @@ class UserController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function userlist()
+    public function index()
     {
-        $userlist = User::all()->where('status', '=', '1');
+        $userlist = User::where('status', '=', '1')->latest()->get();
         return view('user.userlist', compact('userlist'));
     }
     public function requestlist()
