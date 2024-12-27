@@ -13,13 +13,39 @@
     background-color: #FFF8E1;
 }
 
-.blog-card-list h2{
+.blog-card .wrap{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: start;
+}
+.blog-card .author_name{
+    background-color: gray;
+    border-radius: 5px;
+    color: #ffffff;
+    padding: 2px 3px;
+}
+.blog-card h2{
     font-size: 20px;
     padding-right: 10px;
 }
-.blog-card-list p{
-    font-size: 13px;
+.blog-card h5{
+    font-size: 20px;
+    padding-right: 10px;
 }
+.blog-card p{
+    font-size: 13px;
+    margin: 0;
+}
+.blog-card .card-text{
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.blog-card .truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 .blog-card-list .btns .btns-grp{
     display: flex;
     flex-direction: row;
@@ -33,4 +59,70 @@
     margin-top: 10px;
     display: flex;
     justify-content: center;
+}
+.reaction-btns{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.reaction-btns a{
+    color: gray;
+}
+.reaction-btns{
+    margin-bottom: 10px;
+}
+.cmnt-btn a{
+    text-decoration: none;
+}
+.cmnt-btn {
+    margin-bottom: 5px;
+}
+.reaction-btns a{
+    text-decoration: none;
+}
+.reaction-btns a.active{
+    color: blue;
+}
+.reaction-btns .thumbs-up{
+    padding-right: 20px;
+}
+.bredcum{
+    text-decoration: none;
+    display: inline-block;
+    width: fit-content !important;
+}
+.comment{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    border: 1px solid gray;
+    padding: 5px 10px;
+    border-radius: 10px;
+}
+.comment input{
+    width: 100%;
+    border: none;
+    background: transparent;
+    outline: none;
+}
+.comment button{
+    border: none;
+    background: transparent;
+}
+.comment_list{
+    border: 1px solid gray;
+    padding: 5px 10px;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+.comment_list h6{
+    font-weight: bold;
+}
+.comment_list span{
+    font-size: 13px;
+    color: gray;
+}
+.comment_list p{
+    font-size: 18px;
+
 }

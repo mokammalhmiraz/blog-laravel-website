@@ -6,6 +6,8 @@ use Auth;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Models\Blog;
+use App\Models\Comment;
+use App\Models\Reaction;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
 
@@ -26,8 +28,12 @@ class BlogController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    function index()
-    {
+    function category(){
+        // $blogs = Blog::where('added_by', '=', Auth::id())->latest()->get();
+        return view('blog.blogcategory');
+    }
+
+    function index(){
         $blogs = Blog::where('added_by', '=', Auth::id())->latest()->get();
         return view('blog.blogpost',  compact('blogs'));
     }
@@ -141,5 +147,81 @@ class BlogController extends Controller
             $blog->delete();
         }
         return back();
+    }
+
+    function list(){
+        $blogs = Blog::all();
+        return view('blog.bloglist',  compact('blogs'));
+    }
+
+    function fullview($blog_id){
+        $blog = Blog::find($blog_id);
+        $comments = Comment::where('blog_id', '=', $blog_id)->latest()->get();
+        $reaction = Reaction::where('blog_id', '=', $blog_id)->where('user_id', '=' , Auth::id())->first();
+        return view('blog.blogview',  compact('blog','comments','reaction'));
+    }
+
+    function comment(Request $request){
+        print_r($request->content);
+        $request->validate([
+            'content' => 'required',
+        ]);
+        Comment::insert([
+            'content' => $request->content,
+            'user_id' => Auth::id(),
+            'blog_id' => $request->blog_id,
+            'created_at' => Carbon::now()
+        ]);
+        return back()->with('status', 'Blog Added Succecfully!');
+    }
+    function like($blog_id){
+        $reaction = Reaction::where('blog_id', '=', $blog_id)->where('user_id', '=' , Auth::id())->first();
+        if($reaction->reaction == 'Like'){
+            return back();
+        }elseif($reaction->reaction == 'Dislike'){
+            $blog = Blog::find($blog_id);
+            $blog->dislikes -= 1;
+            $blog->likes += 1;
+            $blog->save();
+            $reaction->reaction = "Like";
+            $reaction->save();
+            return back()->with('status', 'Blog Added Succecfully!');
+        }
+        else{
+            $blog = Blog::find($blog_id);
+            $blog->likes += 1;
+            $blog->save();
+            Reaction::insert([
+                'user_id' => Auth::id(),
+                'blog_id' => $blog_id,
+                'reaction' => 'Like'
+            ]);
+            return back()->with('status', 'Blog Added Succecfully!');
+        }
+    }
+    function dislike($blog_id){
+        $reaction = Reaction::where('blog_id', '=', $blog_id)->where('user_id', '=' , Auth::id())->first();
+        if($reaction->reaction == 'Like'){
+            $blog = Blog::find($blog_id);
+            $blog->dislikes += 1;
+            $blog->likes -= 1;
+            $blog->save();
+            $reaction->reaction = "Dislike";
+            $reaction->save();
+            return back()->with('status', 'Blog Added Succecfully!');
+        }elseif($reaction->reaction == 'Dislike'){
+            return back();
+        }
+        else{
+            $blog = Blog::find($blog_id);
+            $blog->dislikes += 1;
+            $blog->save();
+            Reaction::insert([
+                'user_id' => Auth::id(),
+                'blog_id' => $blog_id,
+                'reaction' => 'Dislike'
+            ]);
+            return back()->with('status', 'Blog Added Succecfully!');
+        }
     }
 }

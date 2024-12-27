@@ -73,7 +73,7 @@
                                         <div class="col-8">
                                             <div>
                                                 <div>
-                                                    <h2 class="fw-bold d-inline pr-5">{{ $blog->title }}</h2><span>{{ $blog->category }}</span>
+                                                    <h2 class="fw-bold d-inline">{{ $blog->title }}</h2><span>{{ $blog->category }}</span>
                                                 </div>
                                                 <p>{{ $blog->content }}</p>
                                             </div>

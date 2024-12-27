@@ -18,5 +18,7 @@ class Blog extends Model
         'added_by',
         'created_at',
         'thumbnail', // Add this line
+        'likes',
+        'dislikes',
     ];
 }
