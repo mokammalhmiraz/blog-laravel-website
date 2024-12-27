@@ -20,6 +20,8 @@ Route::get('/userlist', [UserController::class, 'index']); // All User List
 Route::get("user.delete.{user_id}", [UserController::class, 'delete']); // user Delete or Remove
 
 Route::get('/blogcategory', [BlogController::class, 'category']); // Blog Post and Submission Form
+Route::post('/blogcategory.insert', [BlogController::class, 'categoryinsert']); // Blog Post and Submission Form
+Route::get('/category.delete.{category_id}', [BlogController::class, 'categorydelete']); // Blog Post and Submission Form
 Route::get('/blogpost', [BlogController::class, 'index']); // Blog Post and Submission Form
 Route::post('/blogpost.comment', [BlogController::class, 'comment']); // Blog Comment Form
 Route::post('/blogpost.insert', [BlogController::class, 'insert']); // Blog Posting

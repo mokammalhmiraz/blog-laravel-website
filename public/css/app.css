@@ -8,6 +8,7 @@
     border: 1px solid gray;
     border-radius: 10px;
     padding: 20px;
+    margin-bottom: 15px;
 }
 .blog-card-list .blog-card.bg{
     background-color: #FFF8E1;

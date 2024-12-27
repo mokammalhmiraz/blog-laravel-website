@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use App\Models\Blog;
 use App\Models\Comment;
 use App\Models\Reaction;
+use App\Models\Blogcategory;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
 
@@ -29,13 +30,25 @@ class BlogController extends Controller
      * @return \Illuminate\Contracts\Support\Renderable
      */
     function category(){
-        // $blogs = Blog::where('added_by', '=', Auth::id())->latest()->get();
-        return view('blog.blogcategory');
+        $categories = Blogcategory::all();
+        return view('blog.blogcategory', compact('categories'));
+    }
+    function categoryinsert(Request $request){
+        Blogcategory::insert([
+            'name' => $request->category,
+            'added_by' => Auth::id()
+        ]);
+        return back()->with('status', 'Blog Added Succecfully!');
+    }
+    function categorydelete($category_id){
+        Blogcategory::find($category_id)->delete();
+        return back();
     }
 
     function index(){
+        $blogcategories = Blogcategory::all();
         $blogs = Blog::where('added_by', '=', Auth::id())->latest()->get();
-        return view('blog.blogpost',  compact('blogs'));
+        return view('blog.blogpost',  compact('blogs','blogcategories'));
     }
 
     function insert(Request $blog){
@@ -150,7 +163,7 @@ class BlogController extends Controller
     }
 
     function list(){
-        $blogs = Blog::all();
+        $blogs = Blog::where('status','=','published')->latest()->get();
         return view('blog.bloglist',  compact('blogs'));
     }
 
@@ -158,7 +171,13 @@ class BlogController extends Controller
         $blog = Blog::find($blog_id);
         $comments = Comment::where('blog_id', '=', $blog_id)->latest()->get();
         $reaction = Reaction::where('blog_id', '=', $blog_id)->where('user_id', '=' , Auth::id())->first();
-        return view('blog.blogview',  compact('blog','comments','reaction'));
+        if (is_null($reaction)){
+            $reaction = 0;
+            return view('blog.blogview',  compact('blog','comments','reaction'));
+        }else{
+            return view('blog.blogview',  compact('blog','comments','reaction'));
+        }
+
     }
 
     function comment(Request $request){

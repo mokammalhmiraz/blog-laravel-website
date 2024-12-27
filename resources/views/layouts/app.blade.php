@@ -46,9 +46,9 @@
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ url("requestlist")}}">Request List</a>
                                 </li>
-                                {{-- <li class="nav-item">
+                                <li class="nav-item">
                                     <a class="nav-link" href="{{ url("blogcategory")}}">Blog Category</a>
-                                </li> --}}
+                                </li>
                             @endif
                             @if ( ((Auth::user()->role)=='Author') == true )
                             <li class="nav-item">

@@ -19,18 +19,34 @@
                         </div>
                         <p class="card-text">{{ $blog->content }}</p>
                         <div class="reaction-btns">
-                            <div class="thumbs-up">
-                                <a href="{{ url('blogpost.like') }}.{{ $blog->id }}" class="{{ $reaction->reaction === 'Like' ? 'active' : '' }}" >
-                                    <i class="fa-solid fa-thumbs-up"></i>
-                                </a>
-                                <span >{{ $blog->likes }}</span>
-                            </div>
-                            <div class="thumbs-down">
-                                <a href="{{ url('blogpost.dislike') }}.{{ $blog->id }}" class="{{ $reaction->reaction === 'Dislike' ? 'active' : '' }}">
-                                    <i class="fa-solid fa-thumbs-down"></i>
-                                </a>
-                                <span>{{ $blog->dislikes }}</span>
-                            </div>
+                            @if (($reaction)==0)
+                                <div class="thumbs-up">
+                                    <a href="{{ url('blogpost.like') }}.{{ $blog->id }}" class="" >
+                                        <i class="fa-solid fa-thumbs-up"></i>
+                                    </a>
+                                    <span >{{ $blog->likes }}</span>
+                                </div>
+                                <div class="thumbs-down">
+                                    <a href="{{ url('blogpost.dislike') }}.{{ $blog->id }}" class="">
+                                        <i class="fa-solid fa-thumbs-down"></i>
+                                    </a>
+                                    <span>{{ $blog->dislikes }}</span>
+                                </div>
+                            @else
+                                <div class="thumbs-up">
+                                    <a href="{{ url('blogpost.like') }}.{{ $blog->id }}" class="{{ $reaction->reaction === 'Like' ? 'active' : '' }}" >
+                                        <i class="fa-solid fa-thumbs-up"></i>
+                                    </a>
+                                    <span >{{ $blog->likes }}</span>
+                                </div>
+                                <div class="thumbs-down">
+                                    <a href="{{ url('blogpost.dislike') }}.{{ $blog->id }}" class="{{ $reaction->reaction === 'Dislike' ? 'active' : '' }}">
+                                        <i class="fa-solid fa-thumbs-down"></i>
+                                    </a>
+                                    <span>{{ $blog->dislikes }}</span>
+                                </div>
+                            @endif
+
                         </div>
                         <div class="cmnt-btn">
                             <a href="#" class="comment-toggle-btn"><i class="fa-solid fa-comment"></i> Comment</a>

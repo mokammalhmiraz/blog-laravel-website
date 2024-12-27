@@ -15,41 +15,38 @@
                       </tr>
                     </thead>
                     <tbody>
-                        {{-- @foreach ($userlist as $user)
+                        @foreach ($categories as $category)
                             <tr>
                                 <th scope="row">{{ $loop->index + 1 }}</th>
-                                <td>{{ $user->name }}</td>
-                                <td>{{ $user->email }}</td>
-                                <td>{{ $user->role }}</td>
-                                <td>{{ $user->created_at->format('d/m/y A') }}<br><span class="badge bg-success">{{ $user->created_at->diffForHumans() }}</span></td>
-                                <td>
-                                    @if ($user->role !== "Admin")
-                                        <a href="{{ url('user.delete') }}.{{ $user->id }}" class="btn btn-danger btn-sm">Delete</a>
-                                    @endif
-                                </td>
+                                <td>{{ $category->name }}</td>
+                                <td>{{ App\Models\User::find($category->added_by)->name }}</td>
+                                <td><a href="{{ url('category.delete') }}.{{ $category->id }}" class="btn btn-danger btn-sm">Delete</a></td>
                             </tr>
-                        @endforeach --}}
+                        @endforeach
                     </tbody>
                 </table>
             </div>
             <div class="col-4">
-                <form method="POST" action="{{ url('blogcategory.insert') }}" enctype="multipart/form-data">
-                    <!-- CSRF Token for Laravel -->
-                    @csrf
+                <div class="card" >
+                    <div class="card-body">
+                        <form method="POST" action="{{ url('blogcategory.insert') }}" enctype="multipart/form-data">
+                            <!-- CSRF Token for Laravel -->
+                            @csrf
 
-                    <!-- Blog Title -->
-                    <div class="mb-3">
-                        <label for="title">Blog Category</label>
-                        <input class="form-control" type="text" id="category" name="category" placeholder="Enter Blog Category" required>
-                    </div>
+                            <!-- Blog Title -->
+                            <div class="mb-3">
+                                <label for="title">Blog Category</label>
+                                <input class="form-control" type="text" id="category" name="category" placeholder="Enter Blog Category" required>
+                            </div>
 
-                    <!-- Submit Button -->
-                    <div>
-                        <button class="btn btn-primary" type="submit">Add Category</button>
+                            <!-- Submit Button -->
+                            <div>
+                                <button class="btn btn-primary" type="submit">Add Category</button>
+                            </div>
+                        </form>
                     </div>
-                </form>
+                </div>
             </div>
-
         </div>
     </div>
 @endsection

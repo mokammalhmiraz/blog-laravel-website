@@ -12,7 +12,10 @@
                                 <div>
                                     <h5 class="card-title fw-bold d-inline ">{{ $blog->title }}</h5><span>{{ $blog->category }}</span>
                                 </div>
-                                <p>Post by <span class="author_name">{{ App\Models\User::find($blog->added_by)->name }}</span></p>
+                                <div>
+                                    <p>Post by <span class="author_name">{{ App\Models\User::find($blog->added_by)->name }}</span></p>
+                                    <p>{{ $blog->created_at->diffForHumans() }}</p>
+                                </div>
                             </div>
                             <p class="card-text truncate">{{ $blog->content }}</p>
                             {{-- <a href="{{ url('bloglist.view') }}.{{ $blog->id }}" class="btn btn-primary">View Full</a> --}}

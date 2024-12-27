@@ -4,6 +4,11 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-6">
+                @if (session('status'))
+                    <div class="alert alert-success">
+                        {{ session('status') }}
+                    </div>
+                @endif
                 <form method="POST" action="{{ url('blogpost.insert') }}" enctype="multipart/form-data">
                     <!-- CSRF Token for Laravel -->
                     @csrf
@@ -25,10 +30,14 @@
                         <label for="category">Category:</label>
                         <select class="form-control" id="category" name="category" required>
                             <option value="" selected disabled>Select a category</option>
-                            <option value="Technology">Technology</option>
-                            <option value="Health">Health</option>
+                            @foreach ($blogcategories as $blogcategory)
+                                <option value="{{ $blogcategory->name }}">{{ $blogcategory->name }}</option>
+                            @endforeach
+
+
+                            {{-- <option value="Health">Health</option>
                             <option value="Travel">Travel</option>
-                            <option value="Food">Food</option>
+                            <option value="Food">Food</option> --}}
                         </select>
                     </div>
 
