@@ -29,9 +29,17 @@
                                         <img src="{{ asset('uploads/profile') }}/{{ App\Models\Profile::where('user_id','=',$blog->added_by)->first()->image }}" alt="" width="100%">
                                     </div>
                                     <div>
-                                        <a href="{{ url('blog.profile_visit') }}.{{ $blog->added_by }}">
-                                            <p>{{ App\Models\User::find($blog->added_by)->name }}</p>
-                                        </a>
+                                        <div class="profile_link">
+                                            @if ($blog->added_by == Auth::id())
+                                                <a href="{{ url('profile') }}">
+                                                    <p>{{ App\Models\User::find($blog->added_by)->name }}</p>
+                                                </a>
+                                            @else
+                                                <a href="{{ url('blog.profile_visit') }}.{{ $blog->added_by }}">
+                                                    <p>{{ App\Models\User::find($blog->added_by)->name }}</p>
+                                                </a>
+                                            @endif
+                                        </div>
                                         <span>{{ $blog->created_at->diffForHumans() }}</span>
                                     </div>
                                 </div>

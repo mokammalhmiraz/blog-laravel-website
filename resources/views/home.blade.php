@@ -22,62 +22,101 @@
             </div> --}}
         </div>
         <div class="row">
-            @foreach ($blogs as $blog)
+            @if ($blogs->isEmpty())
                 <div class="col-6">
-                    <div class="card">
-                        <div class="card__image">
-                            <img src="{{ asset('uploads/thumbnail') }}/{{ $blog->thumbnail }}" alt="{{ $blog->thumbnail }}" alt="" width="100%">
-
-                            <div class="card__overlay card__overlay--indigo">
-                                <div class="card__overlay-content">
-                                    <ul class="card__meta">
-                                        <li><a href="#0"><i class="fa fa-tag"></i> {{ $blog->category }}</a></li>
-                                        <li><a href="#0"><i class="fa fa-clock-o"></i> {{ $blog->created_at->diffForHumans() }}</a></li>
-                                    </ul>
-
-                                    <span href="#0" class="card__title">{{ $blog->title }}</span>
-
-                                    <ul class="card__meta card__meta--last">
-                                        <li><a href="#0"><i class="fa fa-user"></i> {{ App\Models\User::find($blog->added_by)->name }}</a></li>
-                                        <li><a href="{{ url('bloglist.view') }}.{{ $blog->id }}" class="read_more">Read More</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <p class="alert alert-warning">No Recent Blog Data Found</p>
                 </div>
-            @endforeach
-        </div>
-        <div class="row">
-            <div class="blog_slider">
-                <h4>Trending Blogs</h4>
-                <div class="slider">
-                    @foreach ($allblogs as $blog)
-                        <div class="col-4">
-                            <div class="card">
-                                <div class="card__image">
-                                    <img src="{{ asset('uploads/thumbnail') }}/{{ $blog->thumbnail }}" alt="{{ $blog->thumbnail }}" alt="" width="100%">
+            @else
+                @foreach ($blogs as $blog)
+                    <div class="col-6">
+                        <div class="card">
+                            <div class="card__image">
+                                <img src="{{ asset('uploads/thumbnail') }}/{{ $blog->thumbnail }}" alt="{{ $blog->thumbnail }}" alt="" width="100%">
 
-                                    <div class="card__overlay card__overlay--indigo">
-                                        <div class="card__overlay-content">
-                                            <ul class="card__meta">
-                                                <li><a href="#0"><i class="fa fa-tag"></i> {{ $blog->category }}</a></li>
-                                                <li><a href="#0"><i class="fa fa-clock-o"></i> {{ $blog->created_at->diffForHumans() }}</a></li>
-                                            </ul>
+                                <div class="card__overlay card__overlay--indigo">
+                                    <div class="card__overlay-content">
+                                        <ul class="card__meta">
+                                            <li><a href="#0"><i class="fa fa-tag"></i> {{ $blog->category }}</a></li>
+                                            <li><a href="#0"><i class="fa fa-clock-o"></i> {{ $blog->created_at->diffForHumans() }}</a></li>
+                                        </ul>
 
-                                            <span href="#0" class="card__title">{{ $blog->title }}</span>
+                                        <span href="#0" class="card__title">{{ $blog->title }}</span>
 
-                                            <ul class="card__meta card__meta--last">
-                                                <li><a href="#0"><i class="fa fa-user"></i> {{ App\Models\User::find($blog->added_by)->name }}</a></li>
-                                                <li><a href="{{ url('bloglist.view') }}.{{ $blog->id }}" class="read_more">Read More</a></li>
-                                            </ul>
-                                        </div>
+                                        <ul class="card__meta card__meta--last">
+                                            <li><a href="#0"><i class="fa fa-user"></i> {{ App\Models\User::find($blog->added_by)->name }}</a></li>
+                                            <li><a href="{{ url('bloglist.view') }}.{{ $blog->id }}" class="read_more">Read More</a></li>
+                                        </ul>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    @endforeach
-                </div>
+                    </div>
+                @endforeach
+            @endif
+
+        </div>
+        <div class="row">
+            <div class="blog_slider">
+                <h4>Trending Blogs</h4>
+                    @if ($allblogs->isEmpty())
+                        <div class="col-6">
+                            <p class="alert alert-warning">No Trending Blog Data Found</p>
+                        </div>
+                    @elseif ($blogcount < 4)
+                        @foreach ($allblogs as $blog)
+                            <div class="col-6">
+                                <div class="card">
+                                    <div class="card__image">
+                                        <img src="{{ asset('uploads/thumbnail') }}/{{ $blog->thumbnail }}" alt="{{ $blog->thumbnail }}" alt="" width="100%">
+
+                                        <div class="card__overlay card__overlay--indigo">
+                                            <div class="card__overlay-content">
+                                                <ul class="card__meta">
+                                                    <li><a href="#0"><i class="fa fa-tag"></i> {{ $blog->category }}</a></li>
+                                                    <li><a href="#0"><i class="fa fa-clock-o"></i> {{ $blog->created_at->diffForHumans() }}</a></li>
+                                                </ul>
+
+                                                <span href="#0" class="card__title">{{ $blog->title }}</span>
+
+                                                <ul class="card__meta card__meta--last">
+                                                    <li><a href="#0"><i class="fa fa-user"></i> {{ App\Models\User::find($blog->added_by)->name }}</a></li>
+                                                    <li><a href="{{ url('bloglist.view') }}.{{ $blog->id }}" class="read_more">Read More</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    @else
+                    <div class="slider">
+                        @foreach ($allblogs as $blog)
+                            <div class="col-4">
+                                <div class="card">
+                                    <div class="card__image">
+                                        <img src="{{ asset('uploads/thumbnail') }}/{{ $blog->thumbnail }}" alt="{{ $blog->thumbnail }}" alt="" width="100%">
+
+                                        <div class="card__overlay card__overlay--indigo">
+                                            <div class="card__overlay-content">
+                                                <ul class="card__meta">
+                                                    <li><a href="#0"><i class="fa fa-tag"></i> {{ $blog->category }}</a></li>
+                                                    <li><a href="#0"><i class="fa fa-clock-o"></i> {{ $blog->created_at->diffForHumans() }}</a></li>
+                                                </ul>
+
+                                                <span href="#0" class="card__title">{{ $blog->title }}</span>
+
+                                                <ul class="card__meta card__meta--last">
+                                                    <li><a href="#0"><i class="fa fa-user"></i> {{ App\Models\User::find($blog->added_by)->name }}</a></li>
+                                                    <li><a href="{{ url('bloglist.view') }}.{{ $blog->id }}" class="read_more">Read More</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                    @endif
             </div>
         </div>
     </div>

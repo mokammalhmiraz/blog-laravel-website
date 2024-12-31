@@ -37,11 +37,11 @@ class ProfileController extends Controller
         $blogs = Blog::where('added_by','=',Auth::id())->latest()->get();
         $activities = Activity::where('added_by','=',Auth::id())->get();
         $data = Profile::where('user_id','=', Auth::id())->first();
-        return view('dashboard.profile', compact('data','activities','blogs'));
+        return view('profile.profile', compact('data','activities','blogs'));
     }
     function edit(){
         $user_info = Profile::where('user_id','=', Auth::id())->first();
-        return view('dashboard.editprofile', compact('user_info'));
+        return view('profile.editprofile', compact('user_info'));
     }
 
     public function insert(Request $request){
@@ -127,7 +127,7 @@ class ProfileController extends Controller
     }
     function activity(){
         $activities = Activity::where('added_by','=',Auth::id())->get();
-        return view('dashboard.editactivity',compact('activities'));
+        return view('profile.editactivity',compact('activities'));
     }
     function addactivity(Request $request){
         $request->activityname;
@@ -146,7 +146,7 @@ class ProfileController extends Controller
         $blogs = Blog::where('added_by','=', $profile_id)->where('status','=','published')->latest()->get();
         $activities = Activity::where('added_by','=', $profile_id)->get();
         $data = Profile::where('user_id','=', $profile_id)->first();
-        return view('dashboard.viewprofile', compact('data','activities','blogs'));
+        return view('profile.viewprofile', compact('data','activities','blogs'));
     }
     function authors(){
         // $blogs = Blog::where('added_by','=',Auth::id())->latest()->get();

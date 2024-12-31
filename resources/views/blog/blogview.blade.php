@@ -41,40 +41,47 @@
                         <div>
                           <span class="">{{ $blog->created_at->diffForHumans() }}</span>
                         </div>
-                        <div class="wrap">
-                            <div class="reaction-btns">
-                                @if (($reaction)===0)
-                                    <div class="thumbs-up">
-                                        <a href="{{ url('blogpost.like') }}.{{ $blog->id }}" class="" >
-                                            <i class="fa-solid fa-thumbs-up"></i>
-                                        </a>
-                                        <span >{{ $blog->likes }}</span>
-                                    </div>
-                                    <div class="thumbs-down">
-                                        <a href="{{ url('blogpost.dislike') }}.{{ $blog->id }}" class="">
-                                            <i class="fa-solid fa-thumbs-down"></i>
-                                        </a>
-                                        <span>{{ $blog->dislikes }}</span>
-                                    </div>
-                                @else
-                                    <div class="thumbs-up">
-                                        <a href="{{ url('blogpost.like') }}.{{ $blog->id }}" class="{{ $reaction->reaction === 'Like' ? 'active' : '' }}" >
-                                            <i class="fa-solid fa-thumbs-up"></i>
-                                        </a>
-                                        <span >{{ $blog->likes }}</span>
-                                    </div>
-                                    <div class="thumbs-down">
-                                        <a href="{{ url('blogpost.dislike') }}.{{ $blog->id }}" class="{{ $reaction->reaction === 'Dislike' ? 'active' : '' }}">
-                                            <i class="fa-solid fa-thumbs-down"></i>
-                                        </a>
-                                        <span>{{ $blog->dislikes }}</span>
-                                    </div>
-                                @endif
+                        @if (App\Models\User::find(Auth::id())->status == 0)
+                            <div>
+                                <span class="text-bg-warning">Get Verified From Admin to react and comment on this Blog</span>
                             </div>
-                            <div class="cmnt-btn">
-                                <a href="#" class="comment-toggle-btn"><i class="fa-solid fa-comment"></i> Comment</a>
+                        @else
+                            <div class="wrap">
+                                <div class="reaction-btns">
+                                    @if (($reaction)===0)
+                                        <div class="thumbs-up">
+                                            <a href="{{ url('blogpost.like') }}.{{ $blog->id }}" class="" >
+                                                <i class="fa-solid fa-thumbs-up"></i>
+                                            </a>
+                                            <span >{{ $blog->likes }}</span>
+                                        </div>
+                                        <div class="thumbs-down">
+                                            <a href="{{ url('blogpost.dislike') }}.{{ $blog->id }}" class="">
+                                                <i class="fa-solid fa-thumbs-down"></i>
+                                            </a>
+                                            <span>{{ $blog->dislikes }}</span>
+                                        </div>
+                                    @else
+                                        <div class="thumbs-up">
+                                            <a href="{{ url('blogpost.like') }}.{{ $blog->id }}" class="{{ $reaction->reaction === 'Like' ? 'active' : '' }}" >
+                                                <i class="fa-solid fa-thumbs-up"></i>
+                                            </a>
+                                            <span >{{ $blog->likes }}</span>
+                                        </div>
+                                        <div class="thumbs-down">
+                                            <a href="{{ url('blogpost.dislike') }}.{{ $blog->id }}" class="{{ $reaction->reaction === 'Dislike' ? 'active' : '' }}">
+                                                <i class="fa-solid fa-thumbs-down"></i>
+                                            </a>
+                                            <span>{{ $blog->dislikes }}</span>
+                                        </div>
+                                    @endif
+                                </div>
+                                <div class="cmnt-btn">
+                                    <a href="#" class="comment-toggle-btn"><i class="fa-solid fa-comment"></i> Comment</a>
+                                </div>
                             </div>
-                        </div>
+                        @endif
+
                     </div>
                     <div class="cmnt" style="display: none;">
                         <form method="POST" action="{{ url('blogpost.comment') }}">

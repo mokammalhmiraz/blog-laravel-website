@@ -9,6 +9,7 @@ use App\Models\Blog;
 use App\Models\Comment;
 use App\Models\Reaction;
 use App\Models\Blogcategory;
+use App\Models\Blogview;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
 
@@ -41,7 +42,36 @@ class BlogController extends Controller
         return back()->with('status', 'Blog Added Succecfully!');
     }
     function categorydelete($category_id){
-        Blogcategory::find($category_id)->delete();
+        $category = Blogcategory::find($category_id);
+        $blogs = Blog::where('category', '=', $category->name)->get();
+
+        if($blogs){
+            // Print each blog
+            foreach ($blogs as $blog) {
+
+                $reactions = Reaction::where('blog_id','=',$blog->id)->get();
+                $comments = Comment::where('blog_id','=',$blog->id)->get();
+
+                Blog::find($blog->id)->delete();
+                if($reactions){
+                    // Print each reaction by blog
+                    foreach ($reactions as $reaction) {
+                        Reaction::find($reaction->id)->delete();
+                    }
+                }
+                if($comments){
+                    // Print each comment by blog
+                    foreach ($comments as $comment) {
+                        Comment::find($comment->id)->delete();
+                    }
+                }
+
+            }
+            Blogcategory::find($category_id)->delete();
+        }
+        else{
+            Blogcategory::find($category_id)->delete();
+        }
         return back();
     }
 
@@ -81,10 +111,6 @@ class BlogController extends Controller
 
         Blog::find($blog_id)->update([
             'thumbnail' => $thumbnail_img_name
-        ]);
-        Blogview::insert([
-            'blog_id' => $blog_id,
-            'views' => 0,
         ]);
         return back()->with('status', 'Blog Added Succecfully!');
     }
@@ -192,6 +218,7 @@ class BlogController extends Controller
 
     function fullview($blog_id){
         $blog = Blog::find($blog_id);
+        $blog->increment('views');
         $comments = Comment::where('blog_id', '=', $blog_id)->latest()->get();
         $reaction = Reaction::where('blog_id', '=', $blog_id)->where('user_id', '=' , Auth::id())->first();
         if (is_null($reaction)){

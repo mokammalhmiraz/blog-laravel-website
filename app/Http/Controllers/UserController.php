@@ -41,7 +41,69 @@ class UserController extends Controller
         return back();
     }
     function delete($user_id){
-        User::find($user_id)->delete();
+        $user = User::find($user_id);
+        $blogs = Blog::where('added_by', '=', $user_id)->get();
+        if($blogs){
+            // Print each blog
+            foreach ($blogs as $blog) {
+
+                $reactions = Reaction::where('blog_id','=',$blog->id)->get();
+                $comments = Comment::where('blog_id','=',$blog->id)->get();
+
+                Blog::find($blog->id)->delete();
+                if($reactions){
+                    // Print each reaction by blog
+                    foreach ($reactions as $reaction) {
+                        Reaction::find($reaction->id)->delete();
+                    }
+                }
+                if($comments){
+                    // Print each comment by blog
+                    foreach ($comments as $comment) {
+                        Comment::find($comment->id)->delete();
+                    }
+                }
+
+            }
+            User::find($user_id)->delete();
+        }
+        else{
+            User::find($user_id)->delete();
+        }
+        return back();
+        return back();
+    }
+    function categorydelete($category_id){
+        $category = Blogcategory::find($category_id);
+        $blogs = Blog::where('category', '=', $category->name)->get();
+
+        if($blogs){
+            // Print each blog
+            foreach ($blogs as $blog) {
+
+                $reactions = Reaction::where('blog_id','=',$blog->id)->get();
+                $comments = Comment::where('blog_id','=',$blog->id)->get();
+
+                Blog::find($blog->id)->delete();
+                if($reactions){
+                    // Print each reaction by blog
+                    foreach ($reactions as $reaction) {
+                        Reaction::find($reaction->id)->delete();
+                    }
+                }
+                if($comments){
+                    // Print each comment by blog
+                    foreach ($comments as $comment) {
+                        Comment::find($comment->id)->delete();
+                    }
+                }
+
+            }
+            Blogcategory::find($category_id)->delete();
+        }
+        else{
+            Blogcategory::find($category_id)->delete();
+        }
         return back();
     }
 }
