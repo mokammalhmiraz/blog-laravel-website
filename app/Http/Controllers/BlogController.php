@@ -82,12 +82,17 @@ class BlogController extends Controller
         Blog::find($blog_id)->update([
             'thumbnail' => $thumbnail_img_name
         ]);
+        Blogview::insert([
+            'blog_id' => $blog_id,
+            'views' => 0,
+        ]);
         return back()->with('status', 'Blog Added Succecfully!');
     }
 
     function edit($blog_id){
         $blog = Blog::find($blog_id);
-        return view('blog.blogpostedit',  compact('blog'));
+        $blogcategories = Blogcategory::all();
+        return view('blog.blogpostedit',  compact('blog','blogcategories'));
     }
 
     public function update(Request $request){
@@ -131,9 +136,10 @@ class BlogController extends Controller
         // Save the updated blog data
         $blog->save();
 
+        $blogcategories = Blogcategory::all();
         $blogs = Blog::where('added_by', '=', Auth::id())->latest()->get();
         // Return a specific view with the status message
-        return view('blog.blogpost', compact('blogs'), ['blog' => $blog,'status' => 'Blog updated successfully!']);
+        return view('blog.blogpost', compact('blogs','blogcategories'), ['blog' => $blog,'status' => 'Blog updated successfully!']);
     }
 
     function publish($blog_id){
@@ -158,13 +164,30 @@ class BlogController extends Controller
                 unlink($thumbnailPath);
             }
             $blog->delete();
+            Blogview::where('blog_id','=',$blog_id)->delete();
+            Reaction::where('blog_id','=',$blog_id)->delete();
+            Comment::where('blog_id','=',$blog_id)->delete();
         }
         return back();
     }
 
-    function list(){
-        $blogs = Blog::where('status','=','published')->latest()->get();
-        return view('blog.bloglist',  compact('blogs'));
+    function list(Request $request){
+        // Access the query parameter correctly
+        $query = $request->query('query'); // Retrieve the 'query' parameter
+
+        if ($query) {
+            // If a query parameter exists, filter blogs based on the title
+            $blogs = Blog::where('title', 'like', '%' . $query . '%')->latest()->get();
+            // Return the view with the blogs
+            return view('blog.bloglist', compact('blogs'));
+        } else {
+            // Otherwise, retrieve all published blogs
+            $blogs = Blog::where('status', '=', 'published')->latest()->get();
+            // Return the view with the blogs
+            return view('blog.bloglist', compact('blogs'));
+        }
+
+
     }
 
     function fullview($blog_id){
@@ -194,42 +217,55 @@ class BlogController extends Controller
         return back()->with('status', 'Blog Added Succecfully!');
     }
     function like($blog_id){
-        $reaction = Reaction::where('blog_id', '=', $blog_id)->where('user_id', '=' , Auth::id())->first();
-        if($reaction->reaction == 'Like'){
-            return back();
-        }elseif($reaction->reaction == 'Dislike'){
+        // Retrieve the reaction for the given blog and user
+        $reaction = Reaction::where('blog_id', '=', $blog_id)->where('user_id', '=', Auth::id())->first();
+
+        // Check if the user has already reacted
+        if ($reaction) {
+            // If reaction is "Like", do nothing and return
+            if ($reaction->reaction == 'Like') {
+                return back();
+            }
+            // If reaction is "Dislike", change it to "Like"
+            elseif ($reaction->reaction == 'Dislike') {
+                $blog = Blog::find($blog_id);
+                $blog->dislikes -= 1;  // Decrement dislikes
+                $blog->likes += 1;     // Increment likes
+                $blog->save();
+
+                $reaction->reaction = "Like"; // Update reaction to "Like"
+                $reaction->save();
+                return back()->with('status', 'Blog Liked Successfully!');
+            }
+        } else {
+            // If no reaction exists, create a new "Like"
             $blog = Blog::find($blog_id);
-            $blog->dislikes -= 1;
-            $blog->likes += 1;
+            $blog->likes += 1;  // Increment likes
             $blog->save();
-            $reaction->reaction = "Like";
-            $reaction->save();
-            return back()->with('status', 'Blog Added Succecfully!');
-        }
-        else{
-            $blog = Blog::find($blog_id);
-            $blog->likes += 1;
-            $blog->save();
+
+            // Insert new reaction
             Reaction::insert([
                 'user_id' => Auth::id(),
                 'blog_id' => $blog_id,
-                'reaction' => 'Like'
+                'reaction' => 'Like' // Set the reaction as "Like"
             ]);
-            return back()->with('status', 'Blog Added Succecfully!');
+            return back()->with('status', 'Blog Liked Successfully!');
         }
     }
     function dislike($blog_id){
         $reaction = Reaction::where('blog_id', '=', $blog_id)->where('user_id', '=' , Auth::id())->first();
-        if($reaction->reaction == 'Like'){
-            $blog = Blog::find($blog_id);
-            $blog->dislikes += 1;
-            $blog->likes -= 1;
-            $blog->save();
-            $reaction->reaction = "Dislike";
-            $reaction->save();
-            return back()->with('status', 'Blog Added Succecfully!');
-        }elseif($reaction->reaction == 'Dislike'){
-            return back();
+        if ($reaction) {
+            if($reaction->reaction == 'Like'){
+                $blog = Blog::find($blog_id);
+                $blog->dislikes += 1;
+                $blog->likes -= 1;
+                $blog->save();
+                $reaction->reaction = "Dislike";
+                $reaction->save();
+                return back()->with('status', 'Blog Added Succecfully!');
+            }elseif($reaction->reaction == 'Dislike'){
+                return back();
+            }
         }
         else{
             $blog = Blog::find($blog_id);

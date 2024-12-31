@@ -23,12 +23,12 @@
                     <!-- Blog Category -->
                     <div class="mb-3">
                         <label for="category">Category:</label>
+
                         <select class="form-control" id="category" name="category" required>
                             <option value="" disabled {{ !isset($blog) ? 'selected' : '' }}>Select a category</option>
-                            <option value="Technology" {{ isset($blog) && $blog->category == 'Technology' ? 'selected' : '' }}>Technology</option>
-                            <option value="Health" {{ isset($blog) && $blog->category == 'Health' ? 'selected' : '' }}>Health</option>
-                            <option value="Travel" {{ isset($blog) && $blog->category == 'Travel' ? 'selected' : '' }}>Travel</option>
-                            <option value="Food" {{ isset($blog) && $blog->category == 'Food' ? 'selected' : '' }}>Food</option>
+                            @foreach ($blogcategories as $blogcategory)
+                                <option value="{{ $blogcategory->name }}" {{ isset($blog) && $blog->category == $blogcategory->name ? 'selected' : '' }}>{{ $blogcategory->name }}</option>
+                            @endforeach
                         </select>
                     </div>
 

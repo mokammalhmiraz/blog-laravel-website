@@ -19,7 +19,7 @@
                     @foreach ($requestlist as $user)
                         <tr>
                             <th scope="row">{{ $loop->index + 1 }}</th>
-                            <td>{{ $user->name }}</td>
+                            <td><a class="user" href="{{ url('profile_visit') }}.{{ $user->id }}">{{ $user->name }}</a></td>
                             <td>{{ $user->email }}</td>
                             <td>{{ $user->role }}</td>
                             <td>{{ $user->created_at->format('d/m/y A') }}<br><span class="badge bg-success">{{ $user->created_at->diffForHumans() }}</span></td>

@@ -17,12 +17,15 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css" />
+
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
-<body>
+<body class="body">
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        <nav class="navbar navbar-expand-md shadow-sm">
             <div class="container">
                 {{-- <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name', 'Laravel') }}
@@ -50,13 +53,11 @@
                                     <a class="nav-link" href="{{ url("blogcategory")}}">Blog Category</a>
                                 </li>
                             @endif
-                            @if ( ((Auth::user()->role)=='Author') == true )
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ url("blogpost")}}">Blog Post</a>
+                                <a class="nav-link" href="{{ url("allauthor")}}">Author's</a>
                             </li>
-                            @endif
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ url("bloglist")}}">Blog List</a>
+                                <a class="nav-link" href="{{ url("bloglist")}}">Blogs</a>
                             </li>
                         </ul>
                     @endauth
@@ -83,6 +84,9 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                    @if ( ((Auth::user()->role)=='Author' || (Auth::user()->role)=='Reader') == true )
+                                        <a class="dropdown-item" href="{{ url('profile') }}">{{ __('Profile') }}</a>
+                                    @endif
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                     onclick="event.preventDefault();
                                                     document.getElementById('logout-form').submit();">
@@ -105,6 +109,66 @@
         </main>
     </div>
 </body>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $('.slider').slick({
+            dots: true,              // Show navigation dots
+            infinite: true,          // Infinite looping
+            speed: 300,              // Transition speed
+            slidesToShow: 3,         // Number of slides to show
+            slidesToScroll: 1,       // Number of slides to scroll at once
+            autoplay: true,          // Enable autoplay
+            autoplaySpeed: 1000,     // Autoplay speed (in milliseconds)
+            arrows: false,            // Show next/prev arrows
+            responsive: [            // Responsive settings
+            {
+                breakpoint: 768,
+                settings: {
+                slidesToShow: 1,
+                slidesToScroll: 1,
+                }
+            }
+            ]
+        });
+    });
+    // Function to count words in a string
+    function countWords(str) {
+        return str.trim().split(/\s+/).length;
+    }
+
+    // Get the 'intro' textarea and word count error message elements
+    const introField = document.getElementById('intro');
+    const wordCountError = document.getElementById('wordCountError');
+    const form = document.getElementById('profileForm');
+
+    // Function to validate word count on every input change
+    function validateWordCount() {
+        const wordCount = countWords(introField.value);
+
+        // If word count exceeds 50, show error message and disable form submission
+        if (wordCount > 50) {
+            wordCountError.style.display = 'block'; // Show error message
+            form.querySelector('button[type="submit"]').disabled = true; // Disable submit button
+        } else {
+            wordCountError.style.display = 'none'; // Hide error message
+            form.querySelector('button[type="submit"]').disabled = false; // Enable submit button
+        }
+    }
+
+    // Add event listener to track user input
+    introField.addEventListener('input', validateWordCount);
+
+    // Before submitting, check one last time for word count validation
+    form.addEventListener('submit', function(event) {
+        const wordCount = countWords(introField.value);
+        if (wordCount > 50) {
+            event.preventDefault(); // Prevent form submission
+            alert('Intro must not exceed 50 words.'); // Alert user
+        }
+    });
+</script>
 <script>
 </script>
 </html>

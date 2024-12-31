@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Blog;
 
 class HomeController extends Controller
 {
@@ -22,8 +23,9 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
-    {
-        return view('home',);
+    public function index(){
+        $allblogs = Blog::where('status', 'published')->get();
+        $blogs = Blog::where('status', 'published')->latest()->take(2)->get();
+        return view('home', compact('blogs','allblogs'));
     }
 }

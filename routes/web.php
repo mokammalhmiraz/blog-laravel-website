@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\ProfileController;
 
 Route::get('/', function () {
     return view('auth/login');
@@ -12,6 +13,16 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [HomeController::class, 'index']);
+
+Route::get('/profile', [ProfileController::class, 'index']);
+Route::get('/editprofile', [ProfileController::class, 'edit']);
+Route::post('/profile.insert', [ProfileController::class, 'insert']);
+Route::get('/editactivity', [ProfileController::class, 'activity']);
+Route::post('/activity.insert', [ProfileController::class, 'addactivity']);
+Route::get('/activity.delete.{activity_id}', [ProfileController::class, 'delete']);
+Route::get('/blog.profile_visit.{profile_id}', [ProfileController::class, 'view']); // Blog List
+Route::get('/allauthor', [ProfileController::class, 'authors']); // Blog List
+Route::get('/profile_visit.{profile_id}', [ProfileController::class, 'view']); // Blog List
 
 Route::get('/requestlist', [UserController::class, 'requestlist']); // User Request List
 Route::get('/user.update.{user_id}', [UserController::class, 'update']); // User Request Approval
@@ -35,3 +46,4 @@ Route::get('/blogpost.delete.{blog_id}', [BlogController::class, 'delete']); // 
 
 Route::get('/bloglist', [BlogController::class, 'list']); // Blog List
 Route::get('/bloglist.view.{blog_id}', [BlogController::class, 'fullview']); // Blog List
+

@@ -19,8 +19,8 @@ return new class extends Migration
             $table->integer("added_by");
             $table->string("thumbnail")->nullable();
             $table->string("status");
-            $table->unsignedInteger('likes')->default(0);
-            $table->unsignedInteger('dislikes')->default(0);
+            $table->integer('likes')->default(0);
+            $table->integer('dislikes')->default(0);
             $table->timestamps();
         });
     }
