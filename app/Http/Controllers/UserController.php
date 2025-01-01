@@ -71,7 +71,6 @@ class UserController extends Controller
             User::find($user_id)->delete();
         }
         return back();
-        return back();
     }
     function categorydelete($category_id){
         $category = Blogcategory::find($category_id);
